@@ -10,11 +10,11 @@ const PORT = process.env.PORT || 10000;
 
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-async function generalbot(user, system) {
+
+async function generalbot(genAI, user, system) {
 	try {
-		const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+		const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 		// Add a prompt context that guides the bot to respond as a learning assistant
 		const learningContextPrompt = system;
@@ -34,13 +34,63 @@ async function generalbot(user, system) {
 	}
 }
 
-
+//For multiple Gemini API keys
 app.post('/chat/gemini', async (req, res) => {
-	const {user, system} = req.body;
-	const msg = await generalbot(user, system);
-	res.json({msg});
+	try {
+		const { user, system } = req.body;
+		const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+		const msg = await generalbot(genAI, user, system);
+		res.json({ msg });
+	} catch (error) {
+		console.error("Error handling /chat/gemini request:", error);
+		res.status(500).json({ msg: "Internal Server Error" });
+	}
+});
+app.post('/chat/gemini/2', async (req, res) => {
+	try {
+		const { user, system } = req.body;
+		const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_TWO);
+		const msg = await generalbot(genAI, user, system);
+		res.json({ msg });
+	} catch (error) {
+		console.error("Error handling /chat/gemini request:", error);
+		res.status(500).json({ msg: "Internal Server Error" });
+	}
+});
+app.post('/chat/gemini/3', async (req, res) => {
+	try {
+		const { user, system } = req.body;
+		const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_THREE);
+		const msg = await generalbot(genAI, user, system);
+		res.json({ msg });
+	} catch (error) {
+		console.error("Error handling /chat/gemini request:", error);
+		res.status(500).json({ msg: "Internal Server Error" });
+	}
+});
+app.post('/chat/gemini/4', async (req, res) => {
+	try {
+		const { user, system } = req.body;
+		const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_FOUR);
+		const msg = await generalbot(genAI, user, system);
+		res.json({ msg });
+	} catch (error) {
+		console.error("Error handling /chat/gemini request:", error);
+		res.status(500).json({ msg: "Internal Server Error" });
+	}
+});
+app.post('/chat/gemini/5', async (req, res) => {
+	try {
+		const { user, system } = req.body;
+		const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_FIVE);
+		const msg = await generalbot(genAI, user, system);
+		res.json({ msg });
+	} catch (error) {
+		console.error("Error handling /chat/gemini request:", error);
+		res.status(500).json({ msg: "Internal Server Error" });
+	}
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+	console.log(`Server running on port ${PORT}`);
 });
